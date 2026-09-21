@@ -1,0 +1,15 @@
+name: Bug report
+description: Report reproducible behavior that is not a protocol-safety concern
+body:
+  - type: textarea
+    id: revision
+    attributes: { label: Revision and environment }
+    validations: { required: true }
+  - type: textarea
+    id: reproduction
+    attributes: { label: Minimal reproduction }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes: { label: Expected and actual behavior }
+    validations: { required: true }

@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist", "tsBuildInfoFile": "dist/.tsbuildinfo" },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../../packages/raft-core" },
+    { "path": "../../packages/raft-node" },
+    { "path": "../../packages/raft-storage-memory" },
+    { "path": "../../packages/raft-transport-memory" }
+  ]
+}

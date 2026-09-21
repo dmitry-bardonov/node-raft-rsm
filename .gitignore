@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+snapshots/
+*.pem
+*.key
+.env
+.DS_Store
+tmp/
+docs/IMPLEMENTATION_PLAN.md

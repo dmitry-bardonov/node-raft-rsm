@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/raft-core" },
+    { "path": "packages/raft-storage-memory" },
+    { "path": "packages/raft-transport-memory" },
+    { "path": "packages/raft-node" },
+    { "path": "packages/raft-testing" },
+    { "path": "examples/replicated-kv" }
+  ]
+}

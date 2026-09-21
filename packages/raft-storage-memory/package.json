@@ -1,0 +1,18 @@
+{
+  "name": "@node-raft-rsm/storage-memory",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@node-raft-rsm/core": "workspace:*"
+  }
+}

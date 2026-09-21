@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@node-raft-rsm/core": ["packages/raft-core/src/index.ts"],
+      "@node-raft-rsm/node": ["packages/raft-node/src/index.ts"],
+      "@node-raft-rsm/storage-memory": ["packages/raft-storage-memory/src/index.ts"],
+      "@node-raft-rsm/transport-memory": ["packages/raft-transport-memory/src/index.ts"],
+      "@node-raft-rsm/testing": ["packages/raft-testing/src/index.ts"]
+    }
+  },
+  "include": [
+    "packages/**/*.ts",
+    "examples/**/*.ts",
+    "vitest.config.ts",
+    "vitest.integration.config.ts"
+  ]
+}

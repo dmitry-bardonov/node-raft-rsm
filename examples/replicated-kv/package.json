@@ -1,0 +1,16 @@
+{
+  "name": "@node-raft-rsm/example-kv",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "demo": "node --enable-source-maps dist/demo.js"
+  },
+  "dependencies": {
+    "@node-raft-rsm/core": "workspace:*",
+    "@node-raft-rsm/node": "workspace:*",
+    "@node-raft-rsm/storage-memory": "workspace:*",
+    "@node-raft-rsm/transport-memory": "workspace:*"
+  }
+}

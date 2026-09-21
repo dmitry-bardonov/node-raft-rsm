@@ -1,0 +1,14 @@
+name: Protocol correctness report
+description: Report a possible Raft safety, persistence, or recovery defect
+body:
+  - type: markdown
+    attributes:
+      value: Use a private security advisory instead if confidentiality or security impact is involved.
+  - type: textarea
+    id: invariant
+    attributes: { label: Violated invariant or paper rule }
+    validations: { required: true }
+  - type: textarea
+    id: schedule
+    attributes: { label: Seed, event schedule, logs, and reproduction }
+    validations: { required: true }
