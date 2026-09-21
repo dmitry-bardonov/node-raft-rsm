@@ -39,6 +39,8 @@ pnpm example:kv
 
 The public shape is centered on `RaftNode.create`, `node.start()`, `node.propose(command, { commandId, timeoutMs })`, and `node.read(reader, { consistency: 'local' })`. See the tested [replicated KV state machine](./examples/replicated-kv/src/state-machine.ts) and the [state-machine contract](./docs/state-machine-contract.md). A proposal resolves after the local state machine applies the committed entry. Timeout is ambiguous: retry the identical bytes with the same command ID.
 
+For a complete integration walkthrough, follow [Getting started: embed Raft in an application](./docs/getting-started.md).
+
 Each member needs independent local durable storage. A vote or successful append response must not leave the process until the corresponding term/vote/log changes are durable. Snapshot restore must complete before later entries are replayed. These contracts are explained in [storage and durability](./docs/storage-and-durability.md) and [snapshots](./docs/snapshots.md).
 
 Only explicitly stale-capable local reads exist today. “This process thinks it is leader” is not enough for linearizability; ReadIndex/quorum confirmation is roadmap work.

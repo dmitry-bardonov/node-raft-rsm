@@ -119,7 +119,13 @@ describe('RaftNode', () => {
     await storage.persist({
       hardState: { currentTerm: 3n, votedFor: null, commitIndex: 2n },
       entries: [
-        { index: 1n, term: 2n, type: 'noop', payload: new Uint8Array() },
+        {
+          index: 1n,
+          term: 2n,
+          type: 'command',
+          payload: codec.encode({ delta: 4 }),
+          commandId: 'already-applied-before-crash',
+        },
         {
           index: 2n,
           term: 3n,
@@ -145,7 +151,7 @@ describe('RaftNode', () => {
       stateMachine: machine,
       codec,
     });
-    expect(machine.value).toBe(9);
+    expect(machine.value).toBe(13);
     expect((await storage.load()).appliedIndex).toBe(2n);
     await node.start();
     await node.stop();

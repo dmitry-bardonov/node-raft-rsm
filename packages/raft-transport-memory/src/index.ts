@@ -88,9 +88,13 @@ export class MemoryNetwork {
 
   public async drain(limit = 10_000): Promise<void> {
     let delivered = 0;
-    while (this.#queue.length > 0) {
-      if (++delivered > limit) throw new Error('network drain limit exceeded');
-      await this.deliver();
+    for (;;) {
+      while (this.#queue.length > 0) {
+        if (++delivered > limit) throw new Error('network drain limit exceeded');
+        await this.deliver();
+      }
+      await new Promise<void>((resolve) => setImmediate(resolve));
+      if (this.#queue.length === 0) return;
     }
   }
 }

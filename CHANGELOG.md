@@ -9,6 +9,8 @@ All notable changes will follow Keep a Changelog. Versions will follow Semantic 
 - Strict TypeScript/pnpm workspace and CI foundation.
 - Deterministic Raft elections, log replication, conflict repair, current-term quorum commit, and Ready barriers.
 - Memory storage/network, runtime proposal lifecycle, deterministic test primitives, and KV state machine.
+- A step-by-step SDK integration guide covering commands, codecs, deterministic state machines, lifecycle, proposals, retries, reads, and readiness boundaries.
+- A seeded three-node fault harness with restartable durable memory, partitions, crash/restart, delivery faults, and safety invariant checks.
 - Architecture, safety, operations, security, limitations, roadmap, and decision records.
 
 ### Known gaps

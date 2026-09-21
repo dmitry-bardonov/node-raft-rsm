@@ -99,9 +99,9 @@ export class RaftNode<Command, Result> {
         lastIncludedTerm: persisted.snapshot.lastIncludedTerm,
       });
     }
+    const replayAfter = persisted.snapshot?.lastIncludedIndex ?? 0n;
     for (const entry of persisted.entries) {
-      if (entry.index <= persisted.appliedIndex || entry.index > persisted.hardState.commitIndex)
-        continue;
+      if (entry.index <= replayAfter || entry.index > persisted.hardState.commitIndex) continue;
       if (entry.type === 'command') {
         if (entry.commandId === undefined) throw new Error('recovered command has no command ID');
         const command = options.codec.decode(entry.payload);
@@ -111,10 +111,14 @@ export class RaftNode<Command, Result> {
           commandId: entry.commandId,
         });
       }
-      await options.storage.persist({ entries: [], appliedIndex: entry.index });
     }
-    if (persisted.appliedIndex < persisted.hardState.commitIndex)
+    if (persisted.appliedIndex < persisted.hardState.commitIndex) {
+      await options.storage.persist({
+        entries: [],
+        appliedIndex: persisted.hardState.commitIndex,
+      });
       persisted = await options.storage.load();
+    }
     const core = new RaftCore({
       nodeId: options.nodeId,
       clusterId: options.clusterId,
