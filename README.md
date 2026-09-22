@@ -41,6 +41,18 @@ The public shape is centered on `RaftNode.create`, `node.start()`, `node.propose
 
 For a complete integration walkthrough, follow [Getting started: embed Raft in an application](./docs/getting-started.md).
 
+## Interactive Raft visualizer
+
+Run the React-based local cluster laboratory:
+
+```sh
+pnpm visualizer
+```
+
+Open <http://127.0.0.1:3000> to create clusters, trigger elections and commands, partition the
+network, disable or restart nodes, and manually manipulate Raft messages. See the
+[visualizer guide](./packages/raft-visualizer/README.md) for a walkthrough.
+
 Each member needs independent local durable storage. A vote or successful append response must not leave the process until the corresponding term/vote/log changes are durable. Snapshot restore must complete before later entries are replayed. These contracts are explained in [storage and durability](./docs/storage-and-durability.md) and [snapshots](./docs/snapshots.md).
 
 Only explicitly stale-capable local reads exist today. “This process thinks it is leader” is not enough for linearizability; ReadIndex/quorum confirmation is roadmap work.

@@ -2,12 +2,18 @@ import type { NodeId, RaftMessage, RaftTransport } from '@node-raft-rsm/core';
 
 type Handler = (message: RaftMessage) => Promise<void>;
 
+export interface PendingNetworkMessage {
+  readonly id: number;
+  readonly message: RaftMessage;
+}
+
 export class MemoryNetwork {
   readonly #handlers = new Map<NodeId, Handler>();
-  readonly #queue: RaftMessage[] = [];
+  readonly #queue: PendingNetworkMessage[] = [];
   readonly #blocked = new Set<string>();
   readonly #pendingWaiters = new Set<() => void>();
   #dropAll = false;
+  #nextMessageId = 1;
 
   public endpoint(nodeId: NodeId): MemoryRaftTransport {
     return new MemoryRaftTransport(nodeId, this);
@@ -24,7 +30,7 @@ export class MemoryNetwork {
 
   public enqueue(message: RaftMessage): void {
     if (!this.#dropAll && !this.#blocked.has(edge(message.from, message.to))) {
-      this.#queue.push(message);
+      this.#queue.push({ id: this.#nextMessageId++, message });
       for (const notify of this.#pendingWaiters) notify();
       this.#pendingWaiters.clear();
     }
@@ -65,8 +71,9 @@ export class MemoryNetwork {
   }
 
   public duplicate(index = 0): void {
-    const message = this.#queue[index];
-    if (message !== undefined) this.#queue.splice(index, 0, message);
+    const pending = this.#queue[index];
+    if (pending !== undefined)
+      this.#queue.splice(index, 0, { id: this.#nextMessageId++, message: pending.message });
   }
 
   public reorder(): void {
@@ -77,9 +84,46 @@ export class MemoryNetwork {
     return this.#queue.length;
   }
 
+  public pendingMessages(): readonly PendingNetworkMessage[] {
+    return this.#queue.map(({ id, message }) => ({ id, message }));
+  }
+
+  public blockedEdges(): readonly { readonly from: NodeId; readonly to: NodeId }[] {
+    return [...this.#blocked].map((blocked) => {
+      const separator = blocked.indexOf('\0');
+      return {
+        from: blocked.slice(0, separator) as NodeId,
+        to: blocked.slice(separator + 1) as NodeId,
+      };
+    });
+  }
+
+  public drop(index = 0): boolean {
+    return this.#queue.splice(index, 1).length === 1;
+  }
+
+  public async deliverById(id: number): Promise<boolean> {
+    const index = this.#queue.findIndex((pending) => pending.id === id);
+    if (index === -1) return false;
+    return this.deliver(index);
+  }
+
+  public dropById(id: number): boolean {
+    const index = this.#queue.findIndex((pending) => pending.id === id);
+    return index !== -1 && this.drop(index);
+  }
+
+  public duplicateById(id: number): boolean {
+    const index = this.#queue.findIndex((pending) => pending.id === id);
+    if (index === -1) return false;
+    this.duplicate(index);
+    return true;
+  }
+
   public async deliver(index = 0): Promise<boolean> {
-    const [message] = this.#queue.splice(index, 1);
-    if (message === undefined) return false;
+    const [pending] = this.#queue.splice(index, 1);
+    if (pending === undefined) return false;
+    const { message } = pending;
     const handler = this.#handlers.get(message.to);
     if (handler === undefined || this.#blocked.has(edge(message.from, message.to))) return false;
     await handler(message);

@@ -5,17 +5,21 @@
     "noEmit": true,
     "allowJs": true,
     "checkJs": false,
+    "jsx": "react-jsx",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
     "paths": {
       "@node-raft-rsm/core": ["packages/raft-core/src/index.ts"],
       "@node-raft-rsm/node": ["packages/raft-node/src/index.ts"],
       "@node-raft-rsm/storage-memory": ["packages/raft-storage-memory/src/index.ts"],
       "@node-raft-rsm/transport-memory": ["packages/raft-transport-memory/src/index.ts"],
-      "@node-raft-rsm/testing": ["packages/raft-testing/src/index.ts"]
+      "@node-raft-rsm/testing": ["packages/raft-testing/src/index.ts"],
+      "@node-raft-rsm/visualizer": ["packages/raft-visualizer/src/server/index.ts"]
     }
   },
   "include": [
     "packages/**/*.ts",
+    "packages/**/*.tsx",
     "examples/**/*.ts",
     "vitest.config.ts",
     "vitest.integration.config.ts"

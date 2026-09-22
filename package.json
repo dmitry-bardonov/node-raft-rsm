@@ -19,6 +19,7 @@
     "test:integration": "vitest run --config vitest.integration.config.ts --passWithNoTests",
     "coverage": "vitest run --coverage",
     "example:kv": "pnpm --filter @node-raft-rsm/example-kv build && pnpm --filter @node-raft-rsm/example-kv demo",
+    "visualizer": "pnpm --filter @node-raft-rsm/visualizer... build && pnpm --filter @node-raft-rsm/visualizer start",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
   },
   "devDependencies": {

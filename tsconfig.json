@@ -6,6 +6,7 @@
     { "path": "packages/raft-transport-memory" },
     { "path": "packages/raft-node" },
     { "path": "packages/raft-testing" },
+    { "path": "packages/raft-visualizer" },
     { "path": "examples/replicated-kv" }
   ]
 }
