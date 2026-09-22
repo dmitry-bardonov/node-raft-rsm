@@ -53,6 +53,18 @@ Open <http://127.0.0.1:3000> to create clusters, trigger elections and commands,
 network, disable or restart nodes, and manually manipulate Raft messages. See the
 [visualizer guide](./packages/raft-visualizer/README.md) for a walkthrough.
 
+### See it in action
+
+The laboratory combines a live cluster topology with message controls and a readable event trace:
+
+![Raft laboratory cluster view](./docs/assets/visualizer-cluster.svg)
+
+Start elections, deliver or drop messages, partition the network, and select or reposition nodes
+directly on the canvas. Commands have their own replication trace so it is clear when a leader
+proposes an entry, when a quorum commits it, and when the state machine applies it:
+
+![Raft command replication trace](./docs/assets/visualizer-replication.svg)
+
 Each member needs independent local durable storage. A vote or successful append response must not leave the process until the corresponding term/vote/log changes are durable. Snapshot restore must complete before later entries are replayed. These contracts are explained in [storage and durability](./docs/storage-and-durability.md) and [snapshots](./docs/snapshots.md).
 
 Only explicitly stale-capable local reads exist today. “This process thinks it is leader” is not enough for linearizability; ReadIndex/quorum confirmation is roadmap work.
